@@ -11,7 +11,33 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+
+
+
+use Illuminate\Support\Facades\Route;
+
+Route::group(['middleware' => ['auth']], function()
+{
+
+    Route::get('/', 'PostController@index')->middleware('auth');
+    Route::get('post','PostController@show');
+    
+    Route::get('/posts/create', 'PostController@create');
+    
+    Route::get('/categories/{category}', 'CategoryController@index');
+    
+    Route::delete('/posts/{post}', 'PostController@delete');
+    
+    
+    Route::get('/posts/{abc}', 'PostController@show');
+    Route::post('/posts', 'PostController@store');
+    
+    Route::get('/posts/{post}/edit', 'PostController@edit');
+    Route::put('/posts/{post}', 'PostController@update');
+    Route::get('/home', 'HomeController@index')->name('home');
 });
-Route::get('/posts', 'PostController@index');
+
+    
+
+Auth::routes();
+
